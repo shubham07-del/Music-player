@@ -136,7 +136,9 @@ const handlePrevious = () => {
       </div>
 
       {/* Functions */}
+      
       <div className="w-full flex flex-col items-center gap-4">
+        
         <input
           type="range"
           min="0"
@@ -150,7 +152,8 @@ const handlePrevious = () => {
             audio.currentTime = newTime;
             setProgress(e.target.value);
           }}
-          className="w-[90%] md:w-[70%] box-border"
+          className="range-slider w-full"
+  style={{ "--progress": `${progress}%` }}
         />
         <div className="flex items-center gap-8 justify-center mt-2">
           <IoPlaySkipBackSharp onClick={handlePrevious} className="w-10 h-10 hover:text-gray-400 cursor-pointer" />
@@ -173,3 +176,6 @@ const handlePrevious = () => {
 };
 
 export default MusicPlayer;
+
+
+// w-[90%] md:w-[70%] box-border

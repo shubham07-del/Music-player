@@ -28,7 +28,7 @@ export const songs = [
   {
     id: 1,
     title: "Baliye Re",
-    artist: "Arijit Singh",
+    artist: "Sachet Tondon",
     audio: song1,
     image: image1,
   },

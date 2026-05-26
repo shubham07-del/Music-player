@@ -26,7 +26,7 @@ const Home = ({ currentSong, setCurrentSong, isPlaying, setIsPlaying, audioRef }
             <div
               key={song.id}
               onClick={() => setCurrentSong(song)}
-              className="card shrink-0 w-[84%] h-20 border text-white flex p-2 cursor-pointer rounded-2xl overflow-auto hover:bg-gray-900"
+              className="card shrink-0 w-[84%] h-20 border text-white flex p-2 cursor-pointer rounded-2xl overflow-auto hover:scale-[1.1] hover:bg-gray-900"
             >
               <div className="w-16 h-16 bg-black rounded-full object-fill overflow-hidden">
                 <img className="w-full h-full" src={song.image} alt="" />
