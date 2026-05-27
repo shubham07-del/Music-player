@@ -9,6 +9,8 @@ const MusicPlayer = ({ currentSong, setCurrentSong, songs, isPlaying, setIsPlayi
   const [progress, setProgress] = useState(0);
   const isInitialMount = useRef(true);
   const prevSongId = useRef(null);
+  const autoAdvance = useRef(false); // flag: true when song ended and next should auto-play
+  const handleNextRef = useRef(null); // always points to the latest handleNext (avoids stale closure)
 
 
 //  next and previous action
@@ -22,6 +24,7 @@ const handleNext = () => {
 
   setCurrentSong(songs[nextIndex]);
 };
+handleNextRef.current = handleNext; // keep ref in sync on every render
 
 const handlePrevious = () => {
   const currentIndex = songs.findIndex(
@@ -45,10 +48,11 @@ const handlePrevious = () => {
       if (prevSongId.current !== currentSong.id) {
         audioRef.current.src = currentSong.audio;
         prevSongId.current = currentSong.id;
-        
-        // Don't auto-play on initial mount, only play when user clicks a song
-        if (!isInitialMount.current) {
+
+        // Auto-play if: user manually changed song OR song ended (autoAdvance)
+        if (!isInitialMount.current || autoAdvance.current) {
           audioRef.current.play();
+          autoAdvance.current = false; // reset flag after use
         }
       }
       isInitialMount.current = false;
@@ -71,9 +75,15 @@ const handlePrevious = () => {
       setIsPlaying(false);
     };
 
+    const handleEnded = () => {
+      autoAdvance.current = true; // mark that next song should auto-play
+      handleNextRef.current(); // use ref to always call the LATEST handleNext
+    };
+
     audio.addEventListener("timeupdate", updateProgress);
     audio.addEventListener("play", handlePlay);
     audio.addEventListener("pause", handlePause);
+    audio.addEventListener("ended", handleEnded);
 
     // Sync the UI state with the actual audio playback state when component mounts/comes back
     if (!audio.paused) {
@@ -86,6 +96,7 @@ const handlePrevious = () => {
       audio.removeEventListener("timeupdate", updateProgress);
       audio.removeEventListener("play", handlePlay);
       audio.removeEventListener("pause", handlePause);
+      audio.removeEventListener("ended", handleEnded);
       // Do NOT pause the audio on unmount - let it continue in background
     };
   }, [setIsPlaying]);
@@ -124,7 +135,7 @@ const handlePrevious = () => {
   return (
     <div className="w-full z-30 md:w-[50%] md:h-full flex gap-8 flex-col items-center p-10 overflow-y-auto overflow-x-hidden">
       {/* Song image */}
-      <div className="song w-80 h-80 md:h-100 md:w-65 overflow-hidden rounded-3xl object-fill relative">
+      <div className="song w-80 min-h-30  md:h-120 md:w-70 overflow-hidden rounded-3xl object-fill relative">
         <img className="w-full h-full" src={currentSong.image} alt="" />
         <div className="overlay hidden absolute top-0 w-full h-full  opacity-[0.4]"></div>
       </div>
@@ -152,7 +163,7 @@ const handlePrevious = () => {
             audio.currentTime = newTime;
             setProgress(e.target.value);
           }}
-          className="range-slider w-full"
+          className="range-slider w-160"
   style={{ "--progress": `${progress}%` }}
         />
         <div className="flex items-center gap-8 justify-center mt-2">

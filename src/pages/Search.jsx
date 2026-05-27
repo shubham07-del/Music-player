@@ -7,8 +7,8 @@
 
 //   const searchResults = useMemo(() => {
 //     if (!searchQuery.trim()) return songs;
-    
-//     return songs.filter(song => 
+
+//     return songs.filter(song =>
 //       song.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
 //       song.artist.toLowerCase().includes(searchQuery.toLowerCase())
 //     );
@@ -19,7 +19,7 @@
 //       {/* Header */}
 //       <div className='mb-8'>
 //         <h1 className='text-4xl font-bold mb-6'>Search Songs</h1>
-        
+
 //         {/* Search Input */}
 //         <div className='relative max-w-2xl'>
 //           <div className='absolute left-4 top-1/2 transform -translate-y-1/2'>
@@ -38,8 +38,8 @@
 //       {/* Results Count */}
 //       <div className='mb-6'>
 //         <p className='text-gray-400 text-lg'>
-//           {searchResults.length === 0 
-//             ? 'No songs found' 
+//           {searchResults.length === 0
+//             ? 'No songs found'
 //             : `Found ${searchResults.length} ${searchResults.length === 1 ? 'song' : 'songs'}`
 //           }
 //         </p>
@@ -55,8 +55,8 @@
 //             >
 //               {/* Song Image */}
 //               <div className='relative overflow-hidden h-48 md:h-56'>
-//                 <img 
-//                   src={song.image} 
+//                 <img
+//                   src={song.image}
 //                   alt={song.title}
 //                   className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-300'
 //                 />
@@ -88,22 +88,63 @@
 
 // export default Search;
 
-
-
-
-
-import React from 'react'
+import React, { useState } from "react";
 import { BiError } from "react-icons/bi";
+import { IoSearch } from "react-icons/io5";
 
 const Search = () => {
+  const [searchTitle, setSearchTitle] = useState("");
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    setSearchTitle("");
+  };
+
   return (
-    <div className='w-full md:w-[calc(100%-10rem)] min-h-screen bg-black text-white md:ml-40 flex items-center justify-center md:h-screen md:overflow-auto overflow-x-hidden'>
-          <div className='flex items-center flex-col'>
-            <BiError className='w-30 h-30' />
-          <h1 className='text-3xl font-medium'>😅 I am working on it</h1>
+    <div className="search-page relative w-full px-4 md:w-[calc(100%-10rem)] min-h-screen bg-black text-white md:ml-40  md:h-screen md:overflow-auto overflow-x-hidden">
+      <div className="mt-16 md:mt-5">
+        <h1 className="text-2xl md:text-4xl">Search songs..</h1>
+        <form
+          onSubmit={submitHandler}
+          className="mt-2 py-2 w-full h-14 flex md:items-center justify-start md:mt-5"
+        >
+          <input
+            value={searchTitle}
+            onChange={(e) => setSearchTitle(e.target.value)}
+            type="text"
+            placeholder="Enter song name"
+            className="search-input text-xl border px-3 py-2 rounded-full w-[85%] md:w-[45%] mr-2"
+          />
+          <button className="w-[15%] text-2xl border rounded-full flex h-full items-center justify-center md:w-18 md:h-11">
+            <IoSearch />
+          </button>
+        </form>
+      </div>
+
+      {/* Search cards */}
+
+      <div className="w-full px-2 py-4 h-fit overflow-y-auto flex md:flex-wrap gap-3 flex-col md:flex-row">
+        <div className="search-card w-full md:w-100 px-2 flex gap-4 items-center h-22 py-1 border opacity-[0.85] rounded-xl">
+          <div className="w-20 h-20 object-fill overflow-hidden rounded-full">
+            <img
+              className="w-full h-full opacity-[1]"
+              src="https://images.unsplash.com/photo-1517230878791-4d28214057c2?q=80&w=1169&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              alt=""
+            />
+          </div>
+          <div>
+            <h1 className="text-2xl font-medium">Song</h1>
+            <h3 className="text-gray-300">Artist name</h3>
           </div>
         </div>
-  )
-}
 
-export default Search
+        <div className="w-full h-40 bg-black border rounded-xl text-center flex items-center justify-center">
+            <h1 className="text-4xl font-medium">Not completed yet</h1>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Search;

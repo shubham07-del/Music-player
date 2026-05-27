@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Link } from "react-router-dom";
 import { MdHome } from "react-icons/md";
 import { IoSearch } from "react-icons/io5";
@@ -6,9 +6,7 @@ import { IoIosListBox } from "react-icons/io";
 import { FcLike } from "react-icons/fc";
 import { MdOutlineMenu } from "react-icons/md";
 
-const Sidebar = () => {
-
-  const [toggle, setToggle] = useState(false);
+const Sidebar = ({ toggle, setToggle }) => {
 
   const linkClass =
     'flex items-center gap-4 relative px-3 py-2 rounded transition-all duration-300';
@@ -72,22 +70,22 @@ const Sidebar = () => {
           md:border-gray-600
         `}
       >
-        <Link className={`${linkClass} nav-link`} to={'/'}>
+        <Link className={`${linkClass} nav-link`} to={'/'} onClick={() => setToggle(false)}>
   <MdHome className='w-6 h-6' />
   Home
 </Link>
 
-<Link className={`${linkClass} nav-link`} to={'/search'}>
+<Link className={`${linkClass} nav-link`} to={'/search'} onClick={() => setToggle(false)}>
   <IoSearch className='w-6 h-6' />
   Search
 </Link>
 
-<Link className={`${linkClass} nav-link`} to={'/playlist'}>
+<Link className={`${linkClass} nav-link`} to={'/playlist'} onClick={() => setToggle(false)}>
   <IoIosListBox className='w-6 h-6' />
   Playlist
 </Link>
 
-<Link className={`${linkClass} nav-link`} to={'/liked'}>
+<Link className={`${linkClass} nav-link`} to={'/liked'} onClick={() => setToggle(false)}>
   <FcLike className='w-6 h-6' />
   Liked
 </Link>
